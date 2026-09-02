@@ -3816,7 +3816,7 @@
         "primary": {
           "default": {
             "$type": "color",
-            "$value": "{Color.fuchsia.600}",
+            "$value": "{Color.rose.900}",
             "$description": "",
             "scopes": [
               "FRAME_FILL",
@@ -3826,7 +3826,7 @@
             ],
             "$extensions": {
               "mode": {
-                "Light": "{Color.fuchsia.600}",
+                "Light": "{Color.rose.900}",
                 "Dark": "{Color.rose.300}"
               }
             }
@@ -11911,7 +11911,7 @@
         "Sizing",
         "Annotation"
       ],
-      "createdAt": "2026-09-02T06:17:57.618Z"
+      "createdAt": "2026-09-02T06:19:56.767Z"
     }
   }
 }
