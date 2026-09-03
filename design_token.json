@@ -2205,7 +2205,7 @@
       },
       "900": {
         "$type": "color",
-        "$value": "#3a4cd2",
+        "$value": "#e3af20",
         "$description": "",
         "scopes": [],
         "$extensions": {
@@ -11985,7 +11985,7 @@
         "Sizing",
         "Annotation"
       ],
-      "createdAt": "2026-09-03T05:03:12.722Z"
+      "createdAt": "2026-09-03T05:36:05.594Z"
     }
   }
 }
