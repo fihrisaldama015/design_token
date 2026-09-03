@@ -1,0 +1,71 @@
+name: Sync design tokens to swt-fe-clone
+
+on:
+  push:
+    branches:
+      - "**"
+
+env:
+  # Which branch of the destination repo receives the sync commit.
+  # Change this one line to point the test at dev/stage/etc.
+  DEST_BRANCH: feature/swt20-371-design-token
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check destination token is set
+        id: check
+        env:
+          DEST_REPO_TOKEN: ${{ secrets.DEST_REPO_TOKEN }}
+        run: |
+          if [ -z "$DEST_REPO_TOKEN" ]; then
+            echo "DEST_REPO_TOKEN secret is not set - skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout this repo (source of design_token.json)
+        if: steps.check.outputs.skip == 'false'
+        uses: actions/checkout@v4
+        with:
+          path: source
+
+      - name: Checkout swt-fe-clone (destination)
+        if: steps.check.outputs.skip == 'false'
+        uses: actions/checkout@v4
+        with:
+          repository: fihrisaldama015/swt-fe-clone
+          token: ${{ secrets.DEST_REPO_TOKEN }}
+          ref: ${{ env.DEST_BRANCH }}
+          path: dest
+
+      - name: Copy the export and regenerate tokens.css with the real generator
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          cp source/design_token.json dest/src/styles/design_token.json
+
+          # Runs the destination's own generator, same code npm run
+          # tokens:build runs there - no npm install needed, it only uses
+          # Node builtins plus two files relative to itself.
+          cd dest
+          node scripts/syncDesignTokens.js
+
+      - name: Commit and push if anything changed
+        if: steps.check.outputs.skip == 'false'
+        working-directory: dest
+        run: |
+          git config user.name "design-token-bot"
+          git config user.email "design-token-bot@users.noreply.github.com"
+
+          git add src/styles/design_token.json src/styles/tokens.css src/styles/tokens.meta.json
+          if git diff --cached --quiet; then
+            echo "No token change to commit."
+          else
+            git commit -m "sync design tokens"
+            # actions/checkout with ref: leaves HEAD detached, so push
+            # explicitly to the branch name rather than relying on an
+            # upstream being set.
+            git push origin HEAD:"$DEST_BRANCH"
+          fi
