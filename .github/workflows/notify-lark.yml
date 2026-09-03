@@ -1,0 +1,34 @@
+name: Notify Lark on token update
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Lark notification
+        env:
+          LARK_WEBHOOK_URL: ${{ secrets.LARK_WEBHOOK_URL }}
+        run: |
+          if [ -z "$LARK_WEBHOOK_URL" ]; then
+            echo "LARK_WEBHOOK_URL secret is not set — skipping notification."
+            exit 0
+          fi
+
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+          COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+
+          curl -sS -X POST "$LARK_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d @- <<PAYLOAD
+          {
+            "msg_type": "text",
+            "content": {
+              "text": "design_token diupdate oleh ${COMMIT_AUTHOR}: ${COMMIT_MSG}\n${COMMIT_URL}"
+            }
+          }
+          PAYLOAD
