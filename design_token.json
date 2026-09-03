@@ -2205,7 +2205,7 @@
       },
       "900": {
         "$type": "color",
-        "$value": "#e3af20",
+        "$value": "#ffa515",
         "$description": "",
         "scopes": [],
         "$extensions": {
@@ -8478,20 +8478,6 @@
       "page": {
         "page-padding": {
           "$type": "dimension",
-          "$value": "{Sizing.size-5}",
-          "$description": "",
-          "scopes": [
-            "GAP"
-          ],
-          "$extensions": {
-            "mode": {
-              "Light": "{Sizing.size-5}",
-              "Dark": "{Sizing.size-8}"
-            }
-          }
-        },
-        "page-gap": {
-          "$type": "dimension",
           "$value": "{Sizing.size-4}",
           "$description": "",
           "scopes": [
@@ -8500,7 +8486,21 @@
           "$extensions": {
             "mode": {
               "Light": "{Sizing.size-4}",
-              "Dark": "{Sizing.size-6}"
+              "Dark": "{Sizing.size-4}"
+            }
+          }
+        },
+        "page-gap": {
+          "$type": "dimension",
+          "$value": "{Sizing.size-3}",
+          "$description": "",
+          "scopes": [
+            "GAP"
+          ],
+          "$extensions": {
+            "mode": {
+              "Light": "{Sizing.size-3}",
+              "Dark": "{Sizing.size-3}"
             }
           }
         }
@@ -11985,7 +11985,7 @@
         "Sizing",
         "Annotation"
       ],
-      "createdAt": "2026-09-03T05:36:05.594Z"
+      "createdAt": "2026-09-03T07:44:29.171Z"
     }
   }
 }
