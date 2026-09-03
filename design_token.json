@@ -3,7 +3,7 @@
     "zinc": {
       "50": {
         "$type": "color",
-        "$value": "#fafafa",
+        "$value": "#f9fafa",
         "$description": "",
         "scopes": [],
         "$extensions": {
