@@ -21,10 +21,14 @@ jobs:
             exit 0
           fi
 
-          TEXT=$(printf 'design_token diupdate oleh %s: %s\n%s' "$COMMIT_AUTHOR" "$COMMIT_MSG" "$COMMIT_URL")
+          # A commit message can run to several paragraphs (rationale, test
+          # notes, etc). This is a short heads-up sent to a busy shared group,
+          # not a place for the full body — keep only the subject line.
+          SUBJECT=$(printf '%s\n' "$COMMIT_MSG" | head -n 1)
 
-          # jq -nc builds a valid, compact JSON string, escaping quotes/newlines safely
-          # (commit messages can contain both).
+          TEXT=$(printf 'design_token diupdate oleh %s: %s\n%s' "$COMMIT_AUTHOR" "$SUBJECT" "$COMMIT_URL")
+
+          # jq -nc builds a valid, compact JSON string, escaping quotes/newlines safely.
           PAYLOAD=$(jq -nc --arg text "$TEXT" '{msg_type: "text", content: {text: $text}}')
 
           curl -sS -X POST "$LARK_WEBHOOK_URL" \
